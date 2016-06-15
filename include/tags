@@ -1,0 +1,138 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Animation	FBXLoader.js	/^	function Animation() {$/;"	c
+AnimationCurve	FBXLoader.js	/^	function AnimationCurve() {$/;"	c
+AnimationNode	FBXLoader.js	/^	function AnimationNode() {$/;"	c
+Bones	FBXLoader.js	/^	function Bones() {$/;"	c
+Connections	FBXLoader.js	/^	function Connections(){$/;"	c
+FBXAnalyzer	FBXLoader.js	/^	function FBXAnalyzer() {}$/;"	c
+FBXAnalyzer	FBXLoader.js	/^	function FBXAnalyzer() {}$/;"	f
+FBXLoader	FBXLoader.js	/^\/**$/;"	c
+FBXNodes	FBXLoader.js	/^	function FBXNodes() {}$/;"	c
+FBXNodes	FBXLoader.js	/^	function FBXNodes() {}$/;"	f
+FBXParser	FBXLoader.js	/^	function FBXParser() {}$/;"	c
+FBXParser	FBXLoader.js	/^	function FBXParser() {}$/;"	f
+FBXTimeToSeconds	FBXLoader.js	/^	var FBXTimeToSeconds = function ( adskTime ) {$/;"	f	function:var
+Geometry	FBXLoader.js	/^	function Geometry() {$/;"	c
+Normal	FBXLoader.js	/^	function Normal() {$/;"	c
+THREE.FBXLoader	FBXLoader.js	/^	};$/;"	c
+Texture	FBXLoader.js	/^	function Texture() {$/;"	c
+Textures	FBXLoader.js	/^	function Textures() {$/;"	c
+UV	FBXLoader.js	/^	function UV() {$/;"	c
+Weights	FBXLoader.js	/^	function Weights() {$/;"	c
+_parseText	FBXLoader.js	/^	Normal.prototype._parseText = function ( node ) {$/;"	m	class:Normal
+_parseText	FBXLoader.js	/^	UV.prototype._parseText = function ( node ) {$/;"	m	class:UV
+add	FBXLoader.js	/^	FBXNodes.prototype.add = function ( key, val ) {$/;"	m	class:FBXNodes
+add	FBXLoader.js	/^	Textures.prototype.add = function ( tex ) {$/;"	m	class:Textures
+addAnimation	FBXLoader.js	/^	THREE.FBXLoader.prototype.addAnimation = function ( mesh, matrices, animations ) {$/;"	m	class:THREE.FBXLoader
+addBones	FBXLoader.js	/^	Geometry.prototype.addBones = function ( bones ) {$/;"	m	class:Geometry
+bones	FBXLoader.js	/^		var bones = mesh.geometry.bones;$/;"	v
+buildingProps	FBXLoader.js	/^	function buildingProps(){$/;"	c	class:Connections.function
+buildingProps	FBXLoader.js	/^	}$/;"	c	class:Connections
+constructor	FBXLoader.js	/^	THREE.FBXLoader.prototype.constructor = THREE.FBXLoader;$/;"	m	class:THREE.FBXLoader
+convertPolyIndicesToTri	FBXLoader.js	/^	Geometry.prototype.convertPolyIndicesToTri = function ( indices, strides ) {$/;"	m	class:Geometry
+degToRad	FBXLoader.js	/^	};$/;"	f
+flag	FBXLoader.js	/^				'type2': innerPropType2,$/;"	p	class:getPrevNode
+fps	FBXLoader.js	/^		var animationdata = { "name": 'animationtest', "fps": 30, "length": animations.length, "hierarchy": [] };$/;"	p	class:THREE.FBXLoader.var.animationdata
+fromNode	FBXLoader.js	/^	AnimationCurve.prototype.fromNode = function ( curveNode ) {$/;"	m	class:AnimationCurve
+fromNode	FBXLoader.js	/^	AnimationNode.prototype.fromNode = function ( allNodes, node, bones ) {$/;"	m	class:AnimationNode
+genKey	FBXLoader.js	/^		var genKey = function ( animNode, bone ) {$/;"	f
+getBoneIdfromInternalId	FBXLoader.js	/^	Bones.prototype.getBoneIdfromInternalId = function ( node, id ) {$/;"	m	class:Bones
+getById	FBXLoader.js	/^	Textures.prototype.getById = function ( id ) {$/;"	m	class:Textures
+getByInternalId	FBXLoader.js	/^	Bones.prototype.getByInternalId = function ( internalId ) {$/;"	m	class:Bones
+getCurrentNode	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+getCurrentProp	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+getIndex	FBXLoader.js	/^	UV.prototype.getIndex = function ( node ) {$/;"	m	class:UV
+getLength	FBXLoader.js	/^	AnimationCurve.prototype.getLength = function () {$/;"	m	class:AnimationCurve
+getMap	FBXLoader.js	/^	Normal.prototype.getMap = function ( node ) {$/;"	m	class:Normal
+getMap	FBXLoader.js	/^	UV.prototype.getMap = function ( node ) {$/;"	m	class:UV
+getNode	FBXLoader.js	/^	Normal.prototype.getNode = function ( node ) {$/;"	m	class:Normal
+getNode	FBXLoader.js	/^	UV.prototype.getNode = function ( topnode ) {$/;"	m	class:UV
+getNormal	FBXLoader.js	/^	Normal.prototype.getNormal = function ( node ) {$/;"	m	class:Normal
+getPolygonTopologyArray	FBXLoader.js	/^	Geometry.prototype.getPolygonTopologyArray = function () {$/;"	m	class:Geometry
+getPolygonTopologyMax	FBXLoader.js	/^	Geometry.prototype.getPolygonTopologyMax = function () {$/;"	m	class:Geometry
+getPolygonVertexIndices	FBXLoader.js	/^	Geometry.prototype.getPolygonVertexIndices = function () {$/;"	m	class:Geometry
+getPrevNode	FBXLoader.js	/^	FBXParser.prototype = {$/;"	m	class:FBXParser
+getRef	FBXLoader.js	/^	Normal.prototype.getRef = function ( node ) {$/;"	m	class:Normal
+getRef	FBXLoader.js	/^	UV.prototype.getRef = function ( node ) {$/;"	m	class:UV
+getUV	FBXLoader.js	/^	UV.prototype.getUV = function ( node ) {$/;"	m	class:UV
+getVertices	FBXLoader.js	/^	Geometry.prototype.getVertices = function () {$/;"	m	class:Geometry
+hasCurve	FBXLoader.js	/^		var hasCurve = function ( animNode, attr ) {$/;"	f	function:var
+hasKeyOnFrame	FBXLoader.js	/^		var hasKeyOnFrame = function ( attrNode, frame ) {$/;"	f
+innerPropFlag	FBXLoader.js	/^			var innerPropFlag = props[ 3 ];$/;"	v
+innerPropName	FBXLoader.js	/^			var innerPropName = props[ 0 ];$/;"	v
+innerPropType1	FBXLoader.js	/^			var innerPropType1 = props[ 1 ];$/;"	v
+innerPropType2	FBXLoader.js	/^			var innerPropType2 = props[ 2 ];$/;"	v
+innerPropValue	FBXLoader.js	/^			var innerPropValue = props[ 4 ];$/;"	v
+isBoneNode	FBXLoader.js	/^	Bones.prototype.isBoneNode = function ( id ) {$/;"	m	class:Bones
+isFbxFormatASCII	FBXLoader.js	/^	THREE.FBXLoader.prototype.isFbxFormatASCII = function ( body ) {$/;"	m	class:THREE.FBXLoader
+isFbxVersionSupported	FBXLoader.js	/^	THREE.FBXLoader.prototype.isFbxVersionSupported = function ( body ) {$/;"	m	class:THREE.FBXLoader
+isKeyExistOnFrame	FBXLoader.js	/^		var isKeyExistOnFrame = function ( curve, frame ) {$/;"	f
+length	FBXLoader.js	/^		var animationdata = { "name": 'animationtest', "fps": 30, "length": animations.length, "hierarchy": [] };$/;"	p	class:THREE.FBXLoader.var.animationdata
+load	FBXLoader.js	/^	THREE.FBXLoader.prototype.load = function ( url, onLoad, onProgress, onError ) {$/;"	m	class:THREE.FBXLoader
+loadFile	FBXLoader.js	/^	THREE.FBXLoader.prototype.loadFile = function ( url, onLoad, onProgress, onError, responseType ) {$/;"	m	class:THREE.FBXLoader
+loadFileAsBuffer	FBXLoader.js	/^	THREE.FBXLoader.prototype.loadFileAsBuffer = function ( url, onload, onProgress, onError ) {$/;"	m	class:THREE.FBXLoader
+loadFileAsText	FBXLoader.js	/^	THREE.FBXLoader.prototype.loadFileAsText = function ( url, onLoad, onProgress, onError ) {$/;"	m	class:THREE.FBXLoader
+mapByPolygonVertexToByVertex	FBXLoader.js	/^	function mapByPolygonVertexToByVertex( data, indices, stride ) {$/;"	f	function:function
+name	FBXLoader.js	/^			var name;$/;"	v
+name	FBXLoader.js	/^			var node = { 'name': nodeName, properties: {}, 'subNodes': {} };$/;"	p	class:parseNodeBegin.node
+name	FBXLoader.js	/^		var animationdata = { "name": 'animationtest', "fps": 30, "length": animations.length, "hierarchy": [] };$/;"	p	class:THREE.FBXLoader.var.animationdata
+parentName	FBXLoader.js	/^			var parentName = currentNode.name;$/;"	v
+parse	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+parse	FBXLoader.js	/^	Animation.prototype.parse = function ( node, bones ) {$/;"	m	class:Animation
+parse	FBXLoader.js	/^	Geometry.prototype.parse = function ( geoNode ) {$/;"	m	class:Geometry
+parse	FBXLoader.js	/^	Normal.prototype.parse = function ( topnode, geo ) {$/;"	m	class:Normal
+parse	FBXLoader.js	/^	THREE.FBXLoader.prototype.parse = function ( text ) {$/;"	m	class:THREE.FBXLoader
+parse	FBXLoader.js	/^	Texture.prototype.parse = function ( node, nodes ) {$/;"	m	class:Texture
+parse	FBXLoader.js	/^	Textures.prototype.parse = function ( node, bones ) {$/;"	m	class:Textures
+parse	FBXLoader.js	/^	UV.prototype.parse = function ( node, geo ) {$/;"	m	class:UV
+parse	FBXLoader.js	/^	Weights.prototype.parse = function ( node, bones ) {$/;"	m	class:Weights
+parseCluster	FBXLoader.js	/^	Weights.prototype.parseCluster = function ( node, id, entry ) {$/;"	m	class:Weights
+parseFileName	FBXLoader.js	/^	Texture.prototype.parseFileName = function ( fname ) {$/;"	m	class:Texture
+parseGeometries	FBXLoader.js	/^	THREE.FBXLoader.prototype.parseGeometries = function ( node ) {$/;"	m	class:THREE.FBXLoader
+parseGeometry	FBXLoader.js	/^	THREE.FBXLoader.prototype.parseGeometry = function ( node, nodes ) {$/;"	m	class:THREE.FBXLoader
+parseHierarchy	FBXLoader.js	/^	Bones.prototype.parseHierarchy = function ( node ) {$/;"	m	class:Bones
+parseMaterial	FBXLoader.js	/^	THREE.FBXLoader.prototype.parseMaterial = function ( node ) {$/;"	m	class:THREE.FBXLoader
+parseMaterials	FBXLoader.js	/^	THREE.FBXLoader.prototype.parseMaterials = function ( node ) {$/;"	m	class:THREE.FBXLoader
+parseNodeBegin	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+parseNormal_ByPolygonVertex_Direct	FBXLoader.js	/^	Normal.prototype.parseNormal_ByPolygonVertex_Direct = function ( node, indices, strides, itemSize ) {$/;"	m	class:Normal
+parseNormal_ByPolygonVertex_IndexToDirect	FBXLoader.js	/^	Normal.prototype.parseNormal_ByPolygonVertex_IndexToDirect = function ( node ) {$/;"	m	class:Normal
+parseNormal_ByPolygon_Direct	FBXLoader.js	/^	Normal.prototype.parseNormal_ByPolygon_Direct = function ( node ) {$/;"	m	class:Normal
+parseNormal_ByPolygon_IndexToDirect	FBXLoader.js	/^	Normal.prototype.parseNormal_ByPolygon_IndexToDirect = function ( node ) {$/;"	m	class:Normal
+parseNormal_ByVertex_Direct	FBXLoader.js	/^	Normal.prototype.parseNormal_ByVertex_Direct = function ( node ) {$/;"	m	class:Normal
+parseUV_ByPolygonVertex_Direct	FBXLoader.js	/^	UV.prototype.parseUV_ByPolygonVertex_Direct = function ( node, indices, strides, itemSize ) {$/;"	m	class:UV
+parseUV_ByPolygonVertex_IndexToDirect	FBXLoader.js	/^	UV.prototype.parseUV_ByPolygonVertex_IndexToDirect = function ( node, indices ) {$/;"	m	class:UV
+parseUV_ByPolygon_Direct	FBXLoader.js	/^	UV.prototype.parseUV_ByPolygon_Direct = function ( node ) {$/;"	m	class:UV
+parseUV_ByPolygon_IndexToDirect	FBXLoader.js	/^	UV.prototype.parseUV_ByPolygon_IndexToDirect = function ( node ) {$/;"	m	class:UV
+parseUV_ByVertex_Direct	FBXLoader.js	/^	UV.prototype.parseUV_ByVertex_Direct = function ( node ) {$/;"	m	class:UV
+parse_Data_ByPolygonVertex_Direct	FBXLoader.js	/^	}$/;"	f	function:Connections.buildingProps
+parse_Data_ByPolygonVertex_IndexToDirect	FBXLoader.js	/^	function parse_Data_ByPolygonVertex_IndexToDirect( node, indices, itemSize ) {$/;"	f	function:Connections.buildingProps.function
+popStack	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+properties	FBXLoader.js	/^			var node = { 'name': nodeName, properties: {}, 'subNodes': {} };$/;"	p	class:parseNodeBegin.node
+pushStack	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+quatFromVec	FBXLoader.js	/^	};$/;"	f
+radToDeg	FBXLoader.js	/^	};$/;"	f
+read	FBXLoader.js	/^		var read = function ( offset ) {$/;"	f	function:var
+reindexParentId	FBXLoader.js	/^	Bones.prototype.reindexParentId = function () {$/;"	m	class:Bones
+restoreBindPose	FBXLoader.js	/^	Bones.prototype.restoreBindPose = function ( node ) {$/;"	m	class:Bones
+searchConnectionChildren	FBXLoader.js	/^	FBXNodes.prototype.searchConnectionChildren = function ( id ) {$/;"	m	class:FBXNodes
+searchConnectionParent	FBXLoader.js	/^	FBXNodes.prototype.searchConnectionParent = function ( id ) {$/;"	m	class:FBXNodes
+searchConnectionType	FBXLoader.js	/^	FBXNodes.prototype.searchConnectionType = function ( id, to ) {$/;"	m	class:FBXNodes
+searchParents	FBXLoader.js	/^	Texture.prototype.searchParents = function ( id, nodes ) {$/;"	m	class:Texture
+searchRealId	FBXLoader.js	/^	Bones.prototype.searchRealId = function ( internalId ) {$/;"	m	class:Bones
+setCrossOrigin	FBXLoader.js	/^	THREE.FBXLoader.prototype.setCrossOrigin = function ( value ) {$/;"	m	class:THREE.FBXLoader
+setCurrentProp	FBXLoader.js	/^		},$/;"	m	class:FBXParser
+setCurve	FBXLoader.js	/^	AnimationNode.prototype.setCurve = function ( curve ) {$/;"	m	class:AnimationNode
+toFloat	FBXLoader.js	/^	};$/;"	f
+toInt	FBXLoader.js	/^	};$/;"	f
+toMat44	FBXLoader.js	/^	};$/;"	f
+toRad	FBXLoader.js	/^	};$/;"	f
+traverseConns	FBXLoader.js	/^	Connections.prototype.traverseConns = function (nodes){$/;"	m	class:Connections
+type	FBXLoader.js	/^			this.getPrevNode().properties[ innerPropName ] = {$/;"	p	class:getPrevNode
+type	FBXLoader.js	/^			var type;$/;"	v
+type2	FBXLoader.js	/^				'type': innerPropType1,$/;"	p	class:getPrevNode
+value	FBXLoader.js	/^				'flag': innerPropFlag,$/;"	p	class:getPrevNode
