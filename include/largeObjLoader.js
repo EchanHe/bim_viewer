@@ -25,7 +25,7 @@ THREE.largeObjectLoader.prototype = {
 		fPath = url.match(reg)[1]
 		//fExt = url.match(reg)[2]
 		var fileCounts = 0
-		while (fileCheck(url+"\/" + fName +String(fileCounts) + ".json.js")){
+		while (fileCheck(url+"\/" + fName +String(fileCounts) + ".js")){
 			fileCounts+=1
 		}
 
@@ -42,7 +42,7 @@ THREE.largeObjectLoader.prototype = {
 		var loader = new THREE.XHRLoader( scope.manager );
 		var cond = true
 		for (i = 0; i<fileCounts ; i++){
-			loader.load( (url+"\/" + fName +String(i) + ".json.js"), function ( text ) {
+			loader.load( (url+"\/" + fName +String(i) + ".js"), function ( text ) {
 
 				json.push(JSON.parse( text ))
 				for (j = 0; j<fileCounts ; j++ ){
