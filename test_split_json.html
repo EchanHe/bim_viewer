@@ -34,13 +34,22 @@
 		<script src="/js/Detector.js"></script>
 		<script src="/js/libs/stats.min.js"></script>
 		<script src="/js/libs/dat.gui.min.js"></script>
+		<script src="/include/MouseControls.js"></script>
+		<script src="/include/FirstPersonControls.js"></script>
+		<script src="/include/helpers/AxisHelper.js"></script>		
+		<script src="/include/RoamControls.js"></script>		
 
 
 
 		<script>
+			var files = ["生活给排水-负4层.rvt.js" , "消防水泵房-负4层.rvt.js" , "结构柱-负4层.rvt.js" , "桥架-负4层.rvt.js ",
+			"消火栓-负4层.rvt.js" , "结构梁板-负3层.rvt.js" ,"空调-负4层.rvt.js" , "自动喷淋-负4层.rvt.js"
+			]
 
+			var container
+			var controls ,ctrl;
 
-			var container  ,controls;
+			var orbitOn = true
 
 			var camera, scene, renderer;
 
@@ -67,6 +76,7 @@
 
 
 			function init() {
+		
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -82,51 +92,45 @@
 				scene.add( ambient );
 
 				var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-				directionalLight.position.set( 0, 0, 1 ).normalize();
+				directionalLight.position.set( 0, 10, 1 ).normalize();
 				scene.add( directionalLight );
 
 
 
 
 				var onProgress = function( xhr ) {
-
 					if ( xhr.lengthComputable ) {
-                        console.log(xhr.currentTarget.response.length)
-
-
 						var percentComplete = xhr.loaded / xhr.total * 100;
-						if (percentComplete >90){
-							console.log("1")
+						if (percentComplete%20==0){
+							console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
 						}
-						console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
-
 					}
-
 				};
 
 				var onError = function( xhr ) {
 				};
 				// BEGIN Clara.io JSON loader code
-				var objectLoader = new THREE.largeObjectLoader();
-				// objectLoader.load("models/json/teapot-claraio.json", function ( obj ) {
-				objectLoader.load("model/house", function ( obj ) {
+				var objectLoader = new THREE.ObjectLoader();
+				
+				objectLoader.load("model/house.js", function ( obj ) {
 					//obj.scale.set(0.009,0.009 , 0.009)
+					var faceCount = 0
 
 					//wire frame
-				 	// var wire = new THREE.Group()
-				 	// obj.traverse( function (child){
-				 	// 	if ( child instanceof THREE.Mesh ) {
-						// // 	if (child.id ==43)
-						// // 		child.position.x=-10
-						// // 	if (child.id ==110)
-						// // 		child.position.x=10
-						// 	//pass
-						// wireframe = new THREE.WireframeHelper( child, 0x000000 );
-						// wire.add( wireframe );
+				 	//var wire = new THREE.Group()
+				 	obj.traverse( function (child){
+				 		if ( child instanceof THREE.Mesh ) {
+							// wireframe = new THREE.WireframeHelper( child, 0x000000 );
+							// wire.add( wireframe );
+							if (child.geometry.faces ===undefined){
+								b=null
+							}
+							else
+								faceCount += child.geometry.faces.length
 
-						// }
-				 	// });
-
+						}
+				 	});
+				 	console.log("The faces"+faceCount)
 				 	// scene.add( wire )
 				 	scene.add( obj );
 				}, onProgress , onError );
@@ -139,10 +143,14 @@
 				container.appendChild( renderer.domElement );
 
 
-				controls = new THREE.OrbitControls( camera, renderer.domElement );
-				controls.target.set( 0, 12, 0 );
-				camera.position.set( 2, 0, 1000 );
-				controls.update();
+				// controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls = new THREE.RoamControls( camera );
+				// controls = new THREE.FirstPersonControls( camera, renderer.domElement );
+				// ctrl = new THREE.MouseControls( camera);
+				// controls.target.set( 0, 12, 0 );
+				camera.position.set( 2, 100, 1000 );
+				// controls.update(1);
+				// ctrl.update();
 
 				//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -154,6 +162,43 @@
 				gui = initGUI(gui)
 				window.addEventListener( 'resize', onWindowResize, false );
 				window.addEventListener( 'click', onDocumentMouseClick, false );
+				window.addEventListener( 'keydown', onKeyDown, false );
+				var axisHelper = new THREE.AxisHelper( 1000 );
+				scene.add( axisHelper );		
+
+
+
+				// var material = new THREE.LineBasicMaterial({ color: 0xAAFFAA });
+				// var geometry = new THREE.Geometry();
+				// crosshair = new THREE.Line( geometry, material );
+
+			}
+
+			function onKeyDown(event){
+				switch (event.keyCode){
+					case 90: 
+						//light.visible=!light.visible; 
+						if (controls instanceof THREE.OrbitControls){
+							controls.dispose()
+							controls = new THREE.RoamControls( camera, renderer.domElement );
+							// controls.target.set( 0, 12, 0 );
+							camera.position.set( 2, -100, 1000 );
+							//controls.update(1);		
+							break;					
+						}
+						if (controls instanceof THREE.RoamControls){
+							controls.dispose()
+							controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+							// controls.target.set( 0, 12, 0 );
+							//camera.position.set( 2, -100, 1000 );
+							//controls.update();	
+							break;						
+						}						
+
+						
+					case 69: light1.visible = !light1.visible;break;
+				}
 
 			}
 
@@ -178,7 +223,7 @@
 				var i =0
 				
 				var checkGroup = new RegExp("Object3D","ig") 
-				var checkLight = new RegExp(".*Light","ig") 
+				var checkLight = new RegExp(".*Light|.*Segments","ig") 
 				var type = scene.children[i].type
 				while (scene.children[i].type.match(checkLight) !== null){
 					i++
@@ -188,28 +233,60 @@
 
 				if ( intersects.length > 0 ) {
 
-					if ( INTERSECTED != intersects[ 0 ].object ) {
+					if ( INTERSECTED != intersects[ 0 ].object.parent ) {
 
-						//if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+						if ( INTERSECTED ){
+							intersectDo(true)
+						} 
 
 						INTERSECTED = intersects[ 0 ].object.parent;
-						console.log("the id is:"+INTERSECTED.id)
+						//INTERSECTED.currentHex = []
+						intersectDo(false)
+						// for ( i in INTERSECTED.children){
+							//INTERSECTED.children[1].material.emissive.setHex( 0xff0000 );
+						// }						
+						// INTERSECTED.traverse(function(child){
+						// 	if ( child instanceof THREE.Mesh ) {
+						// 		INTERSECTED.currentHex.push
+						// 		child.material.emissive.setHex( 0xff0000 );
+						// 	}
+						// })
+
+						// console.log("the id is:"+INTERSECTED.id)
 						//INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-						console.log(INTERSECTED.userData)
+						// console.log(INTERSECTED.userData)
 						//console.log(INTERSECTED)
 						//INTERSECTED.material.emissive.setHex( 0xff0000 );
-					//	INTERSECTED.visible=false;
+						//INTERSECTED.visible=false;
+					}
+					else{
+						intersectDo(true)
+					
+						// INTERSECTED.traverse(function(child){
+						// 	if ( child instanceof THREE.Mesh ) {
+						// 		child.material.emissive.setHex( 0x000000 );
+						// 	}
+						// })
 					}
 
 				} else {
 
-					//if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
+					if ( INTERSECTED ) {
+						intersectDo(true)
+						// INTERSECTED.traverse(function(child){
+						// 	if ( child instanceof THREE.Mesh ) {
+						// 		child.material.emissive.setHex( 0x000000 );
+						// 	}
+						// })
+						//INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+					}
 					INTERSECTED = null;
 
             
             	}	
         	}
+
+
 
 			function onWindowResize() {
 
@@ -246,8 +323,8 @@
 
 			
 
-
-
+  				// ctrl.update()
+  				controls.update();
 				stats.update();
 				render();
 
@@ -261,6 +338,40 @@
 				// camera.lookAt( scene.position );
 
 				renderer.render( scene, camera );
+
+			}
+
+
+			function intersectDo(undo){
+				if (undo === false){
+					INTERSECTED.current={}
+					mat = new THREE.MeshPhongMaterial()
+					mat.color.setHex(0x888888)
+					mat.color.setHex(0xff0000)					
+					INTERSECTED.traverse(function(child){
+					// for ( i in INTERSECTED.children){
+					// 	console.log(child.name+"  "+child.material.color)
+					// 	INTERSECTED.current[child.name] = children[i].material
+					// 	INTERSECTED.children[1].material.emissive.setHex( 0xff0000 );
+					// }						
+						
+						if ( child instanceof THREE.Mesh ) {
+							console.log(child.name+"  "+child.material.color)
+							INTERSECTED.current[child.uuid] = child.material
+							child.material = mat //.emissive.setHex( 0x000000 );
+						}
+					})						
+
+				}
+
+				if (undo === true){
+					INTERSECTED.traverse(function(child){
+						if ( child instanceof THREE.Mesh ) {
+							child.material = INTERSECTED.current[child.uuid]
+							console.log(child.name+"  "+child.material.color)
+						}
+					})						
+				}
 
 			}
 

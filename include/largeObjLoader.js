@@ -1,3 +1,7 @@
+/*
+load seperate json files into one model
+*/
+
 THREE.largeObjectLoader = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
