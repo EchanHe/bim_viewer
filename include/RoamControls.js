@@ -7,10 +7,35 @@
  *
  */
 
-THREE.RoamControls = function ( object ) {
+THREE.RoamControls = function ( object  ) {
+
+	// physic switchs
+	this.physic = false
+	this.gravity = true
+	this.FBLR = true
+	this.tcl = false
+
+	var HEIGHT=16
+	var WIDTH=10
+	var LENGTH=10
+
+	var rayDown , rayDown1
+
+	// raycaster for: front back right left
+	var rayUpperF , rayUpperF2 , rayLowerF
+	var rayLowerB , rayUpperB , rayUpperB2
+	var rayLeft
+	var rayRight
+	var fall
+	var fowardCD, backwardCD , rightCD, leftCD
+
+
+
 
     this.movementSpeed = 1.0;
     this.autoSpeedFactor = 0.0;
+
+
 
 	var scope = this;
 	var PI_2 = Math.PI / 2;
@@ -20,6 +45,7 @@ THREE.RoamControls = function ( object ) {
 		y: new THREE.Quaternion()
 	};
 	var object = object;
+	// var role = role
 	var xVector = new THREE.Vector3( 1, 0, 0 );
 	var yVector = new THREE.Vector3( 0, 1, 0 );
 
@@ -37,6 +63,25 @@ THREE.RoamControls = function ( object ) {
 		x: 0,
 		y: 0,
 	};
+
+    //remember the quaterion after changing camera
+
+    this.orientation.x = new THREE.Euler().setFromQuaternion(object.quaternion,"YXZ").x
+    this.orientation.y = new THREE.Euler().setFromQuaternion(object.quaternion , "YXZ").y
+
+    this.setOrientation = function (){
+
+
+
+    	// this.orientation.x =object.rotation.x// new THREE.Euler().setFromQuaternion(object.quaternion).x
+    	// this.orientation.y =object.rotation.y // new THREE.Euler().setFromQu
+
+    	// if (this.orientation.x < -Math.PI/4)
+    	// 	this.orientation.x += Math.PI
+
+    	this.orientation.x = new THREE.Euler().setFromQuaternion(object.quaternion,"YXZ").x
+    	this.orientation.y = new THREE.Euler().setFromQuaternion(object.quaternion , "YXZ").y
+    }
 
     var onMouseDown = function ( event ) {
 
@@ -195,18 +240,198 @@ THREE.RoamControls = function ( object ) {
             delta = 1
 
         var actualMoveSpeed = delta * this.movementSpeed;
-        if ( moveForward  ) object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
-        if ( moveBackward ) object.translateZ( actualMoveSpeed );
+		var displacement = new THREE.Vector3(0,0,0);
+		var eulerY = new THREE.Euler().setFromQuaternion(object.quaternion,'YXZ').y
+		dY = 0
 
-        if ( moveLeft ) object.translateX( - actualMoveSpeed );
-        if ( moveRight ) object.translateX( actualMoveSpeed );
+
+		if (this.physic ==true){
+			// checking physics and movement
+			
+			var direction = new THREE.Vector3().copy(camera.getWorldDirection()).normalize();
+			rayDown = new THREE.Raycaster(camera.position , new THREE.Vector3(0,-1,0),0,HEIGHT)
+
+			var frontLowerOrigin= new THREE.Vector3(camera.position.x+(LENGTH/2)*(direction.x/1) 
+				,camera.position.y -HEIGHT/2
+				, camera.position.z+(LENGTH/2)*(direction.z/1) )
+			var frontUpperOrigin= new THREE.Vector3(camera.position.x+(LENGTH/2)*(direction.x/1) 
+				,camera.position.y -HEIGHT/2
+				, camera.position.z+(LENGTH/2)*(direction.z/1) )
+
+			rayLowerF = new THREE.Raycaster(frontLowerOrigin , new THREE.Vector3(0,-1,0), 0, HEIGHT/2-2)
+			rayUpperF = new THREE.Raycaster(frontUpperOrigin , new THREE.Vector3((direction.x/1)*Math.sin(d15),Math.cos(d15),(direction.z/1)*Math.sin(d15)), 0, HEIGHT/2)
+			rayUpperF2 = new THREE.Raycaster(frontUpperOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2)
+
+
+			var backOrigin= new THREE.Vector3(camera.position.x-(LENGTH/2)*(direction.x/1) 
+				,camera.position.y -HEIGHT/2
+				, camera.position.z-(LENGTH/2)*(direction.z/1) )
+			rayLowerB = new THREE.Raycaster(backOrigin , new THREE.Vector3(0,-1,0), 0, HEIGHT/2-2)
+			rayUpperB = new THREE.Raycaster(backOrigin , new THREE.Vector3((-direction.x/1)*Math.sin(d15),Math.cos(d15),(-direction.z/1)*Math.sin(d15)), 0, HEIGHT/2)
+			rayUpperB2 = new THREE.Raycaster(backOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2)
+			// rayUpperB
+			// rayLowerB
+
+			
+
+
+			
+
+
+			var interLF = rayLowerF.intersectObjects( rootNode.children , true );
+			var interUF = rayUpperF.intersectObjects( rootNode.children , true );
+			var interUF2 = rayUpperF2.intersectObjects( rootNode.children , true );
+
+			var interLB = rayLowerB.intersectObjects( rootNode.children , true );
+			var interUB = rayUpperB.intersectObjects( rootNode.children , true );
+			var interUB2 = rayUpperB2.intersectObjects( rootNode.children , true );
+		 
+
+			var interGround = rayDown.intersectObjects( rootNode.children , true );
+
+
+			// if(interF.length>0){
+			// 	var height = camera.position.y - interF[0].point.y
+			// 	if (height>2)
+			// 		fowardCD=false
+			// 	else{
+			// 		dY+=5
+			// 		fowardCD=true
+			// 	}
+			// }
+
+
+			if (this.gravity ==true){
+				if(interGround.length>0){
+					// if (object.position.y - interGround[0].point.y>5)
+					// 	object.translateY( - ( actualMoveSpeed ) );
+					console.log(camera.position.y - interGround[0].point.y)
+					console.log("down is detect")
+				}
+				if(interGround.length<=0)
+					object.translateY( - ( actualMoveSpeed ) );
+			}
+
+
+
+			if (this.FBLR ==true){
+				if(interLF.length>0){
+					diff = interLF[0].point.y - (camera.position.y -HEIGHT)
+					if(diff>0){
+						dY += diff
+						console.log(diff)
+					}
+				}
+				if(interUF.length>0 || interUF2.length>0){
+					// rayhelper = new THREE.RaycastHelper([rayUpperF2,rayUpperF],scene)
+					fowardCD=true
+				}else{
+					fowardCD=false
+				}	
+
+
+				if(interLB.length>0){
+					diff = interLB[0].point.y - (camera.position.y -HEIGHT)
+					if(diff>0){
+						dY += diff
+						console.log(diff)
+					}
+				}
+				if(interUB.length>0 || interUB2.length>0){
+					// rayhelper = new THREE.RaycastHelper([rayUpperB , rayUpperB2],scene)
+					backwardCD=true
+				}else{
+					backwardCD=false
+				}	
+			}
+
+		}
+		else{
+			fowardCD=false
+			backwardCD=false
+			rightCD=false
+			leftCD=false
+		}
+
+		
+		if (this.physic ===false){
+			if ( moveForward  ) object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
+        	if ( moveBackward ) object.translateZ( actualMoveSpeed );
+
+        	if ( moveLeft ) object.translateX( - actualMoveSpeed );
+        	if ( moveRight ) object.translateX( actualMoveSpeed );
+		}
+		else{
+	        if ( moveForward && !fowardCD  )
+	        	displacement.set(-actualMoveSpeed*Math.sin( eulerY ),dY,-  actualMoveSpeed*Math.cos( eulerY ))   
+			if ( moveBackward && !backwardCD) 
+				displacement.set(actualMoveSpeed*Math.sin( eulerY ),dY,actualMoveSpeed*Math.cos( eulerY ))
+	        if ( moveLeft && !leftCD )
+	        	displacement.set(-  actualMoveSpeed*Math.cos( eulerY ) , dY ,actualMoveSpeed*Math.sin( eulerY ))
+	        if ( moveRight && !rightCD )
+	        	displacement.set(  actualMoveSpeed*Math.cos( eulerY ) , dY ,-actualMoveSpeed*Math.sin( eulerY ))
+    	}
+		
+
+
+
+
+
+        // if ( moveForward  ) object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
+        // if ( moveBackward ) object.translateZ( actualMoveSpeed );
+
+        // if ( moveLeft ) object.translateX( - actualMoveSpeed );
+        // if ( moveRight ) object.translateX( actualMoveSpeed );
+        object.position.add(displacement)
+
 	}
 
 
 	this.updateLookAround = function(){
+		//this.setOrientation()
+
+		var x = Math.max( - PI_2, Math.min( PI_2, this.orientation.x ) );
+		var y = Math.max( - PI_2, Math.min( PI_2, this.orientation.y ) );
+
+var euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
+euler.x = this.orientation.x 
+euler.y = this.orientation.y 
 		mouseQuat.x.setFromAxisAngle( xVector, this.orientation.x );
 		mouseQuat.y.setFromAxisAngle( yVector, this.orientation.y );
-		object.quaternion.copy( mouseQuat.y ).multiply( mouseQuat.x );
+		// object.rotation.x+=this.orientation.x*0.05
+		// object.rotation.y+=this.orientation.y*0.05
+
+
+		// cobj= object.clone()
+camera.quaternion.setFromEuler( euler );
+		// object.quaternion.copy( mouseQuat.y ).multiply( mouseQuat.x );
+
+// object.quaternion.copy( mouseQuat.x ).multiply( mouseQuat.y );
+		// mouseQuat.x.setFromAxisAngle( xVector, x );
+		// mouseQuat.y.setFromAxisAngle( yVector, y );
+		// cobj.quaternion.copy( mouseQuat.y ).multiply( mouseQuat.x );
+
+
+
+		// if (cobj.rotation.x!=object.rotation.x || cobj.rotation.y!=object.rotation.y)
+		// console.log(cobj.rotation)
+		// console.log(object.rotation)
+
+		// object.quaternion.copy( mouseQuat.y ).multiply( mouseQuat.x );
+		// console.log(object.rotation)
 	}
 
+
+
+
+
 };
+
+
+THREE.RoamControls.setPhysic  = function (flag){
+	this.physic = flag
+}
+
+THREE.RoamControls.getPhysic  = function (){
+	return this.physic
+}
