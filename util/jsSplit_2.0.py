@@ -1,9 +1,9 @@
 import binascii, codecs , sys , re , os
-upperSize = 16000000
+upperSize = 100000000
 
 indent=0
 
-path='../model/house.js'
+path='../model/test.js'
 fileRegex = re.compile("(.*\/)([^\/]+)(\.\w+)$")
 fileName = fileRegex.match(path).group(2)
 filePath = fileRegex.match(path).group(1)
@@ -88,10 +88,6 @@ for i, line in enumerate(f):
 
         d = d +"] }"
 
-        # add head of json in it
-        #
-
-      #  print "line" , i , line
         print "in not last split file"
         data[index] = d
        # print "size" , sys.getsizeof(data[index])

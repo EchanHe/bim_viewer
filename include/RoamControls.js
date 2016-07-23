@@ -24,8 +24,8 @@ THREE.RoamControls = function ( object  ) {
 	// raycaster for: front back right left
 	var rayUpperF , rayUpperF2 , rayLowerF
 	var rayLowerB , rayUpperB , rayUpperB2
-	var rayLeft
-	var rayRight
+	var rayLeft 
+	var rayRight , rayRight2
 	var fall
 	var fowardCD, backwardCD , rightCD, leftCD
 
@@ -40,6 +40,7 @@ THREE.RoamControls = function ( object  ) {
 	var scope = this;
 	var PI_2 = Math.PI / 2;
 	var d15 = Math.PI /12
+	var d5 = Math.PI /36
 	var mouseQuat = {
 		x: new THREE.Quaternion(),
 		y: new THREE.Quaternion()
@@ -157,20 +158,7 @@ THREE.RoamControls = function ( object  ) {
 
             case 16: /*Shift*/  run = true ; break;
 
-           //J,L,I,K 
 
-			case 73:
-				orientation.y += d15;
-				break;
-			case 75: 
-				orientation.y -= d15;
-				break;
-			case 74: 
-				orientation.x += d15;								
-				break;
-			case 76:  
-				orientation.x -= d15;
-				break;			
 
 		}
 
@@ -248,32 +236,53 @@ THREE.RoamControls = function ( object  ) {
 		if (this.physic ==true){
 			// checking physics and movement
 			
+			// Creating the rays for collision detection.
+
+
+			//facing direction
 			var direction = new THREE.Vector3().copy(camera.getWorldDirection()).normalize();
+			var righDir = new THREE.Vector3(-direction.z , direction.y , direction.x)
+
 			rayDown = new THREE.Raycaster(camera.position , new THREE.Vector3(0,-1,0),0,HEIGHT)
 
-			var frontLowerOrigin= new THREE.Vector3(camera.position.x+(LENGTH/2)*(direction.x/1) 
+
+			//front
+			var frontOrigin= new THREE.Vector3(camera.position.x+(LENGTH/2)*(direction.x/1) 
 				,camera.position.y -HEIGHT/2
 				, camera.position.z+(LENGTH/2)*(direction.z/1) )
 			var frontUpperOrigin= new THREE.Vector3(camera.position.x+(LENGTH/2)*(direction.x/1) 
 				,camera.position.y -HEIGHT/2
 				, camera.position.z+(LENGTH/2)*(direction.z/1) )
 
-			rayLowerF = new THREE.Raycaster(frontLowerOrigin , new THREE.Vector3(0,-1,0), 0, HEIGHT/2-2)
-			rayUpperF = new THREE.Raycaster(frontUpperOrigin , new THREE.Vector3((direction.x/1)*Math.sin(d15),Math.cos(d15),(direction.z/1)*Math.sin(d15)), 0, HEIGHT/2)
-			rayUpperF2 = new THREE.Raycaster(frontUpperOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2)
+			rayLowerF = new THREE.Raycaster(frontOrigin , new THREE.Vector3(0,-1,0), 0, HEIGHT/2-2)
+			rayUpperF = new THREE.Raycaster(frontOrigin , new THREE.Vector3((direction.x/1)*Math.sin(d15),Math.cos(d15),(direction.z/1)*Math.sin(d15)), 0, HEIGHT/2)
+			rayUpperF2 = new THREE.Raycaster(frontOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2)
 
 
+			//upper
 			var backOrigin= new THREE.Vector3(camera.position.x-(LENGTH/2)*(direction.x/1) 
 				,camera.position.y -HEIGHT/2
 				, camera.position.z-(LENGTH/2)*(direction.z/1) )
 			rayLowerB = new THREE.Raycaster(backOrigin , new THREE.Vector3(0,-1,0), 0, HEIGHT/2-2)
 			rayUpperB = new THREE.Raycaster(backOrigin , new THREE.Vector3((-direction.x/1)*Math.sin(d15),Math.cos(d15),(-direction.z/1)*Math.sin(d15)), 0, HEIGHT/2)
 			rayUpperB2 = new THREE.Raycaster(backOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2)
-			// rayUpperB
-			// rayLowerB
 
+
+			//Right
 			
 
+			var rightOrigin= new THREE.Vector3(camera.position.x + (LENGTH/2)*(righDir.x/1) 
+				,camera.position.y - HEIGHT/2
+				, camera.position.z + (LENGTH/2)*(righDir.z/1) )
+			rayRight = new THREE.Raycaster(rightOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2-2)
+			rayRight2 = new THREE.Raycaster(rightOrigin , new THREE.Vector3((righDir.x/1)*Math.sin(d15),Math.cos(d15),(righDir.z/1)*Math.sin(d15)), 0, HEIGHT/2)
+			
+			//Left
+			var leftOrigin= new THREE.Vector3(camera.position.x - (LENGTH/2)*(righDir.x/1) 
+				,camera.position.y - HEIGHT/2
+				, camera.position.z - (LENGTH/2)*(righDir.z/1) )
+			rayLeft = new THREE.Raycaster(leftOrigin , new THREE.Vector3(0,1,0), 0, HEIGHT/2-2)
+			rayLeft2 = new THREE.Raycaster(leftOrigin , new THREE.Vector3((-righDir.x/1)*Math.sin(d5),Math.cos(d5),(-righDir.z/1)*Math.sin(d15)), 0, HEIGHT/2)	
 
 			
 
@@ -285,7 +294,12 @@ THREE.RoamControls = function ( object  ) {
 			var interLB = rayLowerB.intersectObjects( rootNode.children , true );
 			var interUB = rayUpperB.intersectObjects( rootNode.children , true );
 			var interUB2 = rayUpperB2.intersectObjects( rootNode.children , true );
-		 
+
+			var interR = rayRight.intersectObjects( rootNode.children , true );
+			var interR2 = rayRight2.intersectObjects( rootNode.children , true );
+
+			var interL = rayLeft.intersectObjects( rootNode.children , true );
+		 	var interL2 = rayLeft2.intersectObjects( rootNode.children , true );
 
 			var interGround = rayDown.intersectObjects( rootNode.children , true );
 
@@ -315,6 +329,8 @@ THREE.RoamControls = function ( object  ) {
 
 
 			if (this.FBLR ==true){
+				//*****check the collision on Front(upper body and lower body)
+
 				if(interLF.length>0){
 					diff = interLF[0].point.y - (camera.position.y -HEIGHT)
 					if(diff>0){
@@ -329,7 +345,7 @@ THREE.RoamControls = function ( object  ) {
 					fowardCD=false
 				}	
 
-
+				//*****check the collision on Back(upper body and lower body)
 				if(interLB.length>0){
 					diff = interLB[0].point.y - (camera.position.y -HEIGHT)
 					if(diff>0){
@@ -343,6 +359,23 @@ THREE.RoamControls = function ( object  ) {
 				}else{
 					backwardCD=false
 				}	
+
+				//******check the collision on Right
+				if(interR.length>0 || interR2.length>0){
+					// rayhelper = new THREE.RaycastHelper([rayRight , rayRight2],scene)
+					rightCD=true
+				}else{
+					rightCD=false
+				}				
+
+				//******check the collision on Left
+				if(interL.length>0 || interL2.length>0){
+					// rayhelper = new THREE.RaycastHelper([rayLeft , rayLeft2],scene)
+					leftCD=true
+				}else{
+					leftCD=false
+				}		
+
 			}
 
 		}
@@ -372,16 +405,6 @@ THREE.RoamControls = function ( object  ) {
 	        	displacement.set(  actualMoveSpeed*Math.cos( eulerY ) , dY ,-actualMoveSpeed*Math.sin( eulerY ))
     	}
 		
-
-
-
-
-
-        // if ( moveForward  ) object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
-        // if ( moveBackward ) object.translateZ( actualMoveSpeed );
-
-        // if ( moveLeft ) object.translateX( - actualMoveSpeed );
-        // if ( moveRight ) object.translateX( actualMoveSpeed );
         object.position.add(displacement)
 
 	}
@@ -393,9 +416,9 @@ THREE.RoamControls = function ( object  ) {
 		var x = Math.max( - PI_2, Math.min( PI_2, this.orientation.x ) );
 		var y = Math.max( - PI_2, Math.min( PI_2, this.orientation.y ) );
 
-var euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
-euler.x = this.orientation.x 
-euler.y = this.orientation.y 
+		var euler = new THREE.Euler( 0, 0, 0, 'YXZ' );
+		euler.x = this.orientation.x 
+		euler.y = this.orientation.y 
 		mouseQuat.x.setFromAxisAngle( xVector, this.orientation.x );
 		mouseQuat.y.setFromAxisAngle( yVector, this.orientation.y );
 		// object.rotation.x+=this.orientation.x*0.05
@@ -403,7 +426,7 @@ euler.y = this.orientation.y
 
 
 		// cobj= object.clone()
-camera.quaternion.setFromEuler( euler );
+		camera.quaternion.setFromEuler( euler );
 		// object.quaternion.copy( mouseQuat.y ).multiply( mouseQuat.x );
 
 // object.quaternion.copy( mouseQuat.x ).multiply( mouseQuat.y );

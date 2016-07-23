@@ -18223,6 +18223,7 @@ THREE.XHRLoader.prototype = {
 		request.overrideMimeType( 'text/plain' );
 		request.open( 'GET', url, true );
 
+
 		request.addEventListener( 'load', function ( event ) {
 
 			var response = event.target.response;
@@ -19353,25 +19354,15 @@ THREE.ObjectLoader.prototype = {
 
 		var scope = this;
 
-		var json=[]
+
+
 		var loader = new THREE.XHRLoader( scope.manager );
-		for (i = 0; i<6 ; i++){
-			loader.load( ("model/out1/out" + String(i) + ".json.js"), function ( text ) {
+		loader.load( url, function ( text ) {
 
-				json.push(JSON.parse( text ))
-				if(json[0]!==undefined && json[1] !== undefined&& json[2] !== undefined&& json[3] !== undefined&& json[4] !== undefined&& json[5] !== undefined)
-			 		scope.parse( json, onLoad );
+			scope.parse( JSON.parse( text ), onLoad );
+		// scope.parse( json, onLoad );
 
-			}, onProgress, onError );
-		}
-
-		// var loader = new THREE.XHRLoader( scope.manager );
-		// loader.load( url, function ( text ) {
-
-		// 	scope.parse( JSON.parse( text ), onLoad );
-		//scope.parse( json, onLoad );
-
-		// }, onProgress, onError );
+		}, onProgress, onError );
 
 	},
 
@@ -19388,25 +19379,7 @@ THREE.ObjectLoader.prototype = {
 	},
 
 	parse: function ( json, onLoad ) {
-		// b = json[1]
-		// a = json[0]
-		var result={};
-		for (var i =0 ; i<6 ; i++){
-			a= json[i]
-			for(var key in a) {
-				if (result.hasOwnProperty(key)){
-					result[key]=result[key].concat(a[key]);
-				}
-				else
-					result[key]=a[key];
-			}
-		}
-		json = result
-		// for(var key in a) result[key]=a[key];
-		// for(var key in b) {
 
-		// 	result[key]=result[key].concat(b[key]);
-		// }
 		var geometries = this.parseGeometries( json.geometries );
 
 		var images = this.parseImages( json.images, function () {
@@ -19419,7 +19392,7 @@ THREE.ObjectLoader.prototype = {
 		var materials = this.parseMaterials( json.materials, textures );
 
 		var object = this.parseObject( json.object, geometries, materials );
-
+		// object = null
 		if ( json.animations ) {
 
 			object.animations = this.parseAnimations( json.animations );
@@ -19431,6 +19404,7 @@ THREE.ObjectLoader.prototype = {
 			if ( onLoad !== undefined ) onLoad( object );
 
 		}
+		
 
 		return object;
 
@@ -19620,7 +19594,8 @@ THREE.ObjectLoader.prototype = {
 					case 'Geometry':
 
 						geometry = geometryLoader.parse( data.data, this.texturePath ).geometry;
-
+						// geometry = new THREE.BufferGeometry().fromGeometry( geometry );
+						// geometry = bufferGeometryLoader.parse( data );
 						break;
 
 					default:
