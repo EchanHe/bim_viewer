@@ -56,6 +56,10 @@ AxisHelper.js 画出坐标系
 RaycastHelper.js 画出射线，主要用于碰撞检测。
 
 model/
-├── house
+├── house/
+│   ├── house0.js
+│   ├── house1.js
+│   ├── house2.js
+│   └── house3.js
 ├── house.js
 分别为使用sliceLargeJson.py分割过的模型和没有分割过的模型
