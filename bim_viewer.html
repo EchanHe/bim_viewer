@@ -232,7 +232,8 @@
 
 			var camera, role
 			var scene, renderer , rootNode , modelName;
-			var objectLoader = new THREE.ObjectLoader();
+			// var objectLoader = new THREE.ObjectLoader();
+			var objectLoader = new THREE.largeObjectLoader();
 
 			var mouseX = 0, mouseY = 0;
 
@@ -288,7 +289,7 @@
 
 
 				// model loader code
-				loadModel("model/house.js")
+				loadModel("model/house")
 				//END loader code
 
 				//init webgl render

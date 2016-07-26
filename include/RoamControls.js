@@ -9,13 +9,13 @@
 
 THREE.RoamControls = function ( object  ) {
 
-	// physic switchs
+	// physic switchs variables
 	this.physic = false
 	this.gravity = true
 	this.FBLR = true
 	this.tcl = false
 
-	var HEIGHT=16
+	//var HEIGHT=16
 	var WIDTH=10
 	var LENGTH=10
 
@@ -232,7 +232,7 @@ THREE.RoamControls = function ( object  ) {
 		var eulerY = new THREE.Euler().setFromQuaternion(object.quaternion,'YXZ').y
 		dY = 0
 
-
+        //****************collision and physics calculation***************
 		if (this.physic ==true){
 			// checking physics and movement
 			
@@ -406,6 +406,8 @@ THREE.RoamControls = function ( object  ) {
     	}
 		
         object.position.add(displacement)
+
+        //****************End collision and physics calculation***************
 
 	}
 
