@@ -1,7 +1,5 @@
 import binascii, codecs , sys , re , os
-#global AniFlag ,endFlag
-AniFlag=False
-endFlag=True
+upperSize = 100000000
 
 indent=0
 
@@ -11,7 +9,7 @@ fileName = fileRegex.match(path).group(2)
 filePath = fileRegex.match(path).group(1)
 fileExt = fileRegex.match(path).group(3)
 
-
+jsonType = ["geo" , "else" , "else" , "else"]
 
 f = open(path, 'r')
 # f=[]
@@ -27,72 +25,70 @@ d=""
 head = ""
 splitFlag = False
 firSlice = False
+
+objCount=0
+
+geoRegex = re.compile(".*geometries.*" , re.I )
+AniBeg = re.compile("  \"" )
+AniSplit = re.compile("    (]|})" )
+AniEnd = re.compile("  (]|})" )
+
+status =None
+
+
+def removeComma(line):
+    if line.find(',') != -1:
+        line = line[:line.find(','):]
+    return line
+
+
+
 for i, line in enumerate(f):
    # if a ==True:
     #    data+=line
-    if i ==0:
-        continue
+    # if i ==0:
+    #     continue
 
-    AniBeg = re.compile("  \"" )
-    AniSplit = re.compile("    (]|})" )
-    AniEnd = re.compile("  (]|})" )
+
 #    
     if AniBeg.match(line) != None:
+        if (geoRegex.match(line) != None):
+            status = jsonType[0]
+        else:
+            status = jsonType[1]
+
         print "beg" , i+1 , line 
         head = line
-        line ="{" +line
+        if i >10:
+            line ="{" +line
         firSlice = True
 
-    
-    if AniEnd.match(line) != None:
-        print "end" , i+1 , line 
-        # if AniEnd.match(line).group(1) =="]":
-        #     print line  
-        if line.find(',') != -1:
-            line = line[:line.find(','):]
-            print 'has comma,' , line
-        line = line+"}"
-#        AniFlag=True
-#        endFlag=False
-#        indent =  len( AniBeg.match(line).group(1))
-#
-#        print   len( AniBeg.match(line).group(1))
-#        print AniBeg.match(line).group()
-#    if AniFlag ==True:
-#        end = re.compile("^\\t{" +str(indent ) + "}}") 
-#        if end.match(line)!=None:
-#            print "end",end.match(line).group(), i
-#            AniFlag = False
-#            endFlag=True
+    # if AniEnd.match(line) != None:     
+    #     objCount+=1
     
     
 
 
-    if sys.getsizeof(d) > 100000000:
+    if sys.getsizeof(d) > upperSize:
         splitFlag = True
-        
 
-    if splitFlag ==True and AniSplit.match(line) !=None:
-        if line.find(',') != -1:
-            line = line[:line.find(','):]
-            print 'has comma,' , line
 
-    d +=line    
+    ##############
+    # find split part
+    ##########        
     if splitFlag ==True and AniSplit.match(line) !=None:
         # if line.find(',') != -1:
         #     line = line[:line.find(','):]
         #     print 'has comma,' , line
+        line = removeComma(line)
+        d +=line    
         if firSlice !=True:
             print "index" , index, "give head" , head 
             d="{" + head + d
 
         d = d +"] }"
 
-        # add head of json in it
-        #
-
-      #  print "line" , i , line
-
+        print "in not last split file"
         data[index] = d
        # print "size" , sys.getsizeof(data[index])
 
@@ -104,18 +100,42 @@ for i, line in enumerate(f):
 
 
 
-    if AniEnd.match(line) != None:
+    if AniEnd.match(line) != None :
+        line = removeComma(line)
+
+        line = line+"}"
+
+        d +=line 
         if firSlice ==False:
             d="{" + head + d
         data[index] = d
-        print "size" , sys.getsizeof(data[index])
+        # print "in last split file"
 
         index+=1
         d=""
         splitFlag = False
+        continue
+    # if objCount==4 and index!=0:
+    #     print "in last file"
+
+    #     d="{" +d
+    #     data[index]=d
+
+    #     index+=1
+    #     d=""
+    #     continue
+
+    d +=line    
+
 #    result = re.match("^\t*AnimationCurve.+" , line)
 #    if result != None:
        # data+=line
+if index ==0:
+    data[0]=d
+    index = 1
+
+
+
 
 data = data[:index]
 
@@ -141,11 +161,10 @@ try:
 except:
     os.mkdir(outPath)
 
-
+print "Output data length" , len(data)
 for i, d in enumerate(data):
 
-    print "in side"
-
+    
     out= outPath + fileName + str(i) + fileExt
     f1 = open(out , 'w')
     #print a.encode('hex')
